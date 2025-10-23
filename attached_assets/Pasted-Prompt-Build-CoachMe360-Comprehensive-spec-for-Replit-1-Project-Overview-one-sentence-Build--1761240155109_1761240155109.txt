@@ -1,0 +1,269 @@
+Prompt — Build CoachMe360 (Comprehensive spec for Replit)
+1) Project Overview (one sentence)
+
+Build CoachMe360 — a web application that helps managers discover blind spots (self vs 360 feedback), build emotional intelligence, practice feedback, track progress with data, run team pulse checks, and practice leadership via AI-driven simulations.
+All AI/NLP/ML features must use Gemini API; for other features, use any libraries or platforms as desired.
+Users can access and use the app directly — no sign-in or profile creation required.
+
+2) Core Objectives & Value
+
+Provide clear visual evidence of self–other gaps (Johari/Dunning–Kruger problem).
+
+Give practical coaching micro-actions grounded in OB theory (GROW, SBI, LMX, Path-Goal).
+
+Produce measurable progress with dashboards and KPIs HR can use.
+
+Offer AI-powered summaries, role-play simulations, sentiment & risk scoring via Gemini.
+
+3) Must-have Features (priority order)
+A. Roles & Permissions
+
+Roles: Admin (HR), Manager (subject), Peer/Direct report (feedback giver), Mentor/Coach (internal/external).
+
+Permissions: anonymous feedback submission allowed; managers can view aggregated results only.
+
+B. Organization Setup
+
+Org structure: departments and teams; admins can create manager records.
+
+No personal account or sign-in required — users can directly participate and submit feedback.
+
+C. Self-assessment & 360° Feedback
+
+Self-assessment form (Likert 1–10) across a configurable set of competencies (EI, Empathy, Coaching, Communication, Empowerment, Commitment, Problem-solving, etc.).
+
+360 feedback submission occurs directly on the Feedback Page: employees (peers/direct reports) submit feedback on the same page (no email invites). The page supports multiple anonymous submissions so many colleagues can add feedback one after another without leaving the page.
+
+Each employee must also provide short feedback lines (1–2 sentences) alongside each rating — e.g., “Sometimes dismisses new ideas before discussion” or “Encourages open sharing in team meetings.”
+
+After results are collected, Gemini analyzes both quantitative gaps (ratings shown on radar/line charts) and qualitative insights (feedback lines) to highlight discrepancies between the manager’s self-perception and team perception.
+
+Gemini then generates suggestions for the manager’s development rooted in HR and Organizational Behavior theories such as Johari Window, GROW, Path-Goal, and SBI.
+
+Anonymous option clearly presented; the system must preserve anonymity and not link submissions to identities unless explicit opt-in.
+
+D. Visualization & Reports
+
+Radar chart comparing self vs 360 (interactive).
+
+Trend lines for scores over time (line charts).
+
+Downloadable PDF summary reports for managers & HR.
+
+E. PulseEngage (Team Pulse)
+
+Short weekly check-in (3 Qs by default: listened-to, workload fairness, manager helpfulness).
+
+Anonymous aggregation and trend visualization.
+
+F. EQ Mirror & Reflection Journal
+
+Daily/weekly journaling prompts (3 prompts).
+
+Sentiment analysis + emotional tone timeline (AI-driven).
+
+Private to user but summary trends feed manager coaching plan if user opts in.
+
+G. Coaching Workflows (GROW + SBI)
+
+Guided module to create GROW goals per direct report.
+
+Built-in templates for SBI feedback messages; save and reuse.
+
+Task list for behavioural experiments (implementation intentions) with reminders and owner assignments.
+
+H. Feedback Buddy (Practice & Role-play)
+
+AI-driven role-play: manager practices delivering feedback; AI plays the direct report and responds realistically. (Gemini)
+
+AI evaluates use of SBI, tone, and suggests improvements (concrete lines).
+
+I. LeadLab — Simulations & Gamification
+
+Short gamified scenarios where manager choices change team morale/performance metrics.
+
+Each scenario explains theory (Path-Goal, Transformational) and suggests learning points.
+
+J. AI Features (REQUIRED: Gemini API)
+
+360 Summary & Gap Analysis: Gemini interprets both the numeric rating differences and qualitative feedback lines to pinpoint blind spots, communication barriers, and empathy gaps.
+
+Action Suggestion Engine: When major perception gaps exist, Gemini provides practical improvement advice (e.g., active listening, delegation, coaching posture) grounded in theories like GROW, LMX, Path-Goal, and Emotional Intelligence.
+
+Role-play & Coaching Evaluation: Real-time simulation and feedback scoring.
+
+Sentiment & Emotion Analysis: On journals, meeting transcripts, and open feedback.
+
+Derailment Risk Prediction: Detect early warning signs from negative sentiment, low feedback consistency, or deteriorating 360 trends.
+
+Meeting Summaries (optional): Upload transcript → AI summary + suggested follow-ups.
+
+All NLP/LLM tasks must use Gemini API with retries, rate limits, and graceful fallback.
+
+K. Integrations & Notifications
+
+Optional email or Slack reminders for pulse and micro-action nudges (not required for submission).
+
+Calendar integration for scheduling coaching sessions.
+
+L. Admin & HR Dashboard
+
+View aggregated leadership metrics by team/department.
+
+Export CSV/PDF.
+
+Configure competency list, thresholds for action, and promotion gating rules.
+
+4) Non-Functional Requirements
+
+Security: store data securely; use HTTPS; role-based permissions for admins.
+
+Privacy: all feedback is anonymous; no user account creation required.
+
+Scalability: design to support hundreds of simultaneous sessions.
+
+UX: minimal friction — instant access, mobile responsive, feedback takes <2 minutes.
+
+Testing: unit tests for backend, integration tests for AI flows (mock Gemini).
+
+Observability: basic logging, error tracking, and usage analytics.
+
+5) Data Model (suggested)
+
+(Retained but without user login fields)
+
+Manager: id, name, dept, role
+SelfAssessment: id, manager_id, responses{competency:score}, created_at
+Feedback: id, manager_id, responses{competency:score}, comments_text, created_at
+Pulse: id, team_id, responses{}, created_at
+JournalEntry: id, manager_id, text, sentiment_score, emotion_tags, created_at
+GROWGoal: id, manager_id, goal, reality, options, will, progress_notes[]
+AIAnalysis: id, source_type, source_id, summary, themes[], sentiment, created_at
+
+6) Gemini Integration — Guidance
+
+Use Gemini API for:
+
+Summarizing feedback text
+
+Extracting themes and emotional tone
+
+Analyzing self–other rating gaps
+
+Generating micro-actions tied to HR/OB theory
+
+7) UI Pages / Wireframe (minimum)
+
+Home / Dashboard
+
+Dashboard (Manager View): radar chart, trends, pulse snapshot
+
+Self Assessment Page
+
+Feedback Page: inline feedback submission form that accepts multiple anonymous submissions on the same page (no email invites)
+
+Report Page: 360 summary, AI themes, action items
+
+Pulse Page: team pulse history
+
+Journal Page: reflection + sentiment timeline
+
+Role-play / Feedback Buddy Page: chat UI (Gemini)
+
+Simulations / LeadLab Page: scenarios & outcomes
+
+Admin / HR Dashboard: templates, exports, thresholds
+
+Settings Page: integrations, notification preferences
+
+8) Acceptance Criteria (deliverables)
+
+Self and 360 forms integrated and persisting data (360 submissions supported directly on the Feedback page with multiple anonymous entries).
+
+Radar chart comparing self vs 360 (interactive).
+
+Weekly pulse implemented with visible trends.
+
+Journal sentiment analysis using Gemini.
+
+AI summary for each 360 cycle.
+
+Role-play chat using Gemini with actionable suggestions.
+
+GROW & action tracker implemented.
+
+Admin dashboard with configurable competencies.
+
+Basic security (HTTPS, hashed data).
+
+Unit + integration tests for AI flow (mock Gemini).
+
+9) Sample Test Data (for dev & QA)
+
+Manager: Darcy Gallagher (mgr_001)
+
+Team: Alice, Bob, Cathy
+
+Self-assessment: EI=9, Coaching=8, Empathy=9, Communication=5
+
+360 Feedback: Alice (EI=3, Coaching=2), Bob (EI=4), Cathy (EI=3)
+
+Pulse responses (week1): listened=40%, workload=60%, manager_help=33%
+Expected: Radar shows large gap; Gemini summary = “low empathy,” “directive style,” “improve listening.”
+
+10) UX Copy / Example Messages
+
+AI coaching message:
+“This week’s experiment: Before every team meeting, ask one open question and pause 10 seconds before speaking.”
+
+11) Optional Advanced Features (Stretch Goals)
+
+Audio transcription → AI summary + action items (Gemini speech + NLU).
+
+Predictive analytics dashboard (trend-based derailment risk).
+
+Slack app for pulse & micro-action reminders.
+
+Badging system for demonstrated leadership improvement.
+
+12) Deliverables & Suggested Timeline
+
+Week 1: Data models, feedback/self forms, DB setup (Feedback page supports multiple anonymous entries).
+
+Week 2: Visualization (Radar, Pulse trends)
+
+Week 3: Gemini integration for summaries & sentiment
+
+Week 4: Role-play, GROW, Admin dashboards
+
+Week 5: Testing, polish, deployment on Replit
+
+13) Developer Notes / Constraints
+
+Must use Gemini API for all AI/NLP tasks.
+
+For other components, free to use any frameworks or libraries (React, Vue, Flask, Django, Express, Chart.js, etc.).
+
+Respect privacy — never send PII to Gemini unless sanitized and approved.
+
+Modularize Gemini calls (service layer) for easy replacement.
+
+Include clear error handling, retries, and offline fallback.
+
+14) Example Acceptance Test (AI Flow)
+
+Upload 20 open-ended feedback comments (mixed tone).
+
+Trigger “AI Summarize 360.”
+
+Expect JSON output:
+{ strengths:[3], development_areas:[3], themes:[3], actions:[5], sentiment_score:-0.2 }
+Display as readable report.
+
+15) Final Notes for Replit / Developer
+
+Include a README with environment setup, how to set GEMINI_API_KEY, run local tests, and mock Gemini.
+
+Implement logging, rate-limiting, and graceful degradation if AI is unavailable.
+
+Design must be intuitive, responsive, and user-friendly.
