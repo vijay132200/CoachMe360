@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { FileText, Download, TrendingUp, TrendingDown, AlertCircle, Lightbulb, Target } from "lucide-react";
 import { useState } from "react";
+import { isStaticMode } from "@/lib/queryClient";
 
 export default function Reports() {
   const [selectedManager, setSelectedManager] = useState<string>("");
@@ -28,16 +29,23 @@ export default function Reports() {
   const handleDownloadPDF = async () => {
     if (!selectedManager) return;
     
+    if (isStaticMode) {
+      console.error("PDF download is not available in static mode");
+      return;
+    }
+    
     try {
-      const response = await fetch(`/api/reports/${selectedManager}/pdf`);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const url = `${API_BASE_URL}/api/reports/${selectedManager}/pdf`;
+      const response = await fetch(url);
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = downloadUrl;
       a.download = `360-report-${selectedManager}.pdf`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(downloadUrl);
       document.body.removeChild(a);
     } catch (error) {
       console.error("Failed to download PDF:", error);

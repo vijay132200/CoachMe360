@@ -35,7 +35,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Settings, Plus, Users, Download, Sliders } from "lucide-react";
-import { apiRequest, queryClient } from "@/lib/queryClient";
+import { apiRequest, queryClient, isStaticMode } from "@/lib/queryClient";
 import { Badge } from "@/components/ui/badge";
 
 export default function Admin() {
@@ -122,16 +122,27 @@ export default function Admin() {
   });
 
   const exportData = async (type: string) => {
+    if (isStaticMode) {
+      toast({
+        title: "Export unavailable",
+        description: "Export is not available in static mode. Please configure VITE_API_BASE_URL.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      const response = await fetch(`/api/admin/export/${type}`);
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+      const url = `${API_BASE_URL}/api/admin/export/${type}`;
+      const response = await fetch(url);
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = downloadUrl;
       a.download = `${type}-export.csv`;
       document.body.appendChild(a);
       a.click();
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(downloadUrl);
       document.body.removeChild(a);
       toast({
         title: "Export successful",

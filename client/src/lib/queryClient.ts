@@ -1,4 +1,7 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { apiGet, isStaticMode } from "./api";
+
+export { isStaticMode };
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -12,7 +15,16 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const res = await fetch(url, {
+  if (method === "POST" || method === "PUT" || method === "PATCH" || method === "DELETE") {
+    if (isStaticMode) {
+      throw new Error('Cannot submit data in static mode. Please configure VITE_API_BASE_URL.');
+    }
+  }
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+  const fullUrl = API_BASE_URL ? `${API_BASE_URL}${url}` : url;
+
+  const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
     body: data ? JSON.stringify(data) : undefined,
@@ -29,16 +41,16 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
-    });
-
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    const url = queryKey.join("/") as string;
+    
+    try {
+      return await apiGet<T>(url);
+    } catch (error: any) {
+      if (unauthorizedBehavior === "returnNull" && error.message?.includes("401")) {
+        return null;
+      }
+      throw error;
     }
-
-    await throwIfResNotOk(res);
-    return await res.json();
   };
 
 export const queryClient = new QueryClient({
