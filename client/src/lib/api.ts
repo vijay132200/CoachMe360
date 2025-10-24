@@ -26,9 +26,10 @@ async function fetchWithFallback(url: string, options?: RequestInit): Promise<Re
 
   try {
     const response = await fetch(`${API_BASE_URL}${url}`, options);
-    if (!response.ok && response.status === 404) {
+    if (!response.ok) {
       const staticPath = staticDataMap[url];
       if (staticPath) {
+        console.warn(`API returned ${response.status} for ${url}, falling back to static data`);
         return fetch(staticPath);
       }
     }
