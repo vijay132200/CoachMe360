@@ -44,10 +44,10 @@ export const getQueryFn: <T>(options: {
     const url = queryKey.join("/") as string;
     
     try {
-      return await apiGet<T>(url);
+      return await apiGet(url);
     } catch (error: any) {
       if (unauthorizedBehavior === "returnNull" && error.message?.includes("401")) {
-        return null;
+        return null as any;
       }
       throw error;
     }
