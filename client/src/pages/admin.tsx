@@ -166,6 +166,17 @@ export default function Admin() {
         </p>
       </div>
 
+      {isStaticMode && (
+        <Card className="border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+          <CardHeader>
+            <CardTitle className="text-yellow-800 dark:text-yellow-200">Demo Mode</CardTitle>
+            <CardDescription className="text-yellow-700 dark:text-yellow-300">
+              You're viewing static demo data. To enable full functionality (create, edit, export), configure VITE_API_BASE_URL to point to your backend server.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      )}
+
       {/* Stats */}
       <div className="grid gap-6 md:grid-cols-4">
         <Card data-testid="card-total-managers">
@@ -307,7 +318,7 @@ export default function Admin() {
                     />
 
                     <div className="flex gap-3 pt-4">
-                      <Button type="submit" disabled={managerMutation.isPending} data-testid="button-submit-manager">
+                      <Button type="submit" disabled={managerMutation.isPending || isStaticMode} data-testid="button-submit-manager">
                         {managerMutation.isPending ? "Creating..." : "Create Manager"}
                       </Button>
                       <Button
@@ -426,7 +437,7 @@ export default function Admin() {
                     />
 
                     <div className="flex gap-3 pt-4">
-                      <Button type="submit" disabled={competencyMutation.isPending} data-testid="button-submit-competency">
+                      <Button type="submit" disabled={competencyMutation.isPending || isStaticMode} data-testid="button-submit-competency">
                         {competencyMutation.isPending ? "Creating..." : "Create Competency"}
                       </Button>
                       <Button
@@ -489,19 +500,19 @@ export default function Admin() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-3">
-          <Button variant="outline" onClick={() => exportData("managers")} data-testid="button-export-managers">
+          <Button variant="outline" onClick={() => exportData("managers")} disabled={isStaticMode} data-testid="button-export-managers">
             <Download className="h-4 w-4 mr-2" />
             Export Managers
           </Button>
-          <Button variant="outline" onClick={() => exportData("assessments")} data-testid="button-export-assessments">
+          <Button variant="outline" onClick={() => exportData("assessments")} disabled={isStaticMode} data-testid="button-export-assessments">
             <Download className="h-4 w-4 mr-2" />
             Export Assessments
           </Button>
-          <Button variant="outline" onClick={() => exportData("feedback")} data-testid="button-export-feedback">
+          <Button variant="outline" onClick={() => exportData("feedback")} disabled={isStaticMode} data-testid="button-export-feedback">
             <Download className="h-4 w-4 mr-2" />
             Export 360° Feedback
           </Button>
-          <Button variant="outline" onClick={() => exportData("pulse")} data-testid="button-export-pulse">
+          <Button variant="outline" onClick={() => exportData("pulse")} disabled={isStaticMode} data-testid="button-export-pulse">
             <Download className="h-4 w-4 mr-2" />
             Export Pulse Checks
           </Button>

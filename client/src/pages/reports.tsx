@@ -91,7 +91,7 @@ export default function Reports() {
             <Button
               variant="outline"
               onClick={handleDownloadPDF}
-              disabled={!selectedManager || reportLoading}
+              disabled={!selectedManager || reportLoading || isStaticMode}
               data-testid="button-download-pdf"
             >
               <Download className="h-4 w-4 mr-2" />
