@@ -1,0 +1,5 @@
+[
+  { "week": "Jan 8", "listenedTo": 8, "workloadFair": 7, "managerHelpful": 8 },
+  { "week": "Jan 15", "listenedTo": 8.5, "workloadFair": 7.5, "managerHelpful": 7.5 },
+  { "week": "Jan 22", "listenedTo": 8, "workloadFair": 8, "managerHelpful": 8 }
+]

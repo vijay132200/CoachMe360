@@ -1,0 +1,15 @@
+{
+  "competencies": [
+    { "name": "Emotional Intelligence", "self": 7, "feedback": 8 },
+    { "name": "Empathy", "self": 8, "feedback": 7 },
+    { "name": "Coaching & Development", "self": 6, "feedback": 7 },
+    { "name": "Communication", "self": 8, "feedback": 8 },
+    { "name": "Empowerment & Delegation", "self": 7, "feedback": 6 },
+    { "name": "Commitment to Team", "self": 9, "feedback": 9 },
+    { "name": "Problem Solving", "self": 7, "feedback": 7 }
+  ],
+  "selfAssessmentCount": 2,
+  "feedbackCount": 5,
+  "growthPercentage": 12,
+  "growthStatus": "Growing"
+}

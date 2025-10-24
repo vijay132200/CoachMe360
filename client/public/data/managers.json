@@ -1,0 +1,23 @@
+[
+  {
+    "id": "demo-manager-1",
+    "name": "Darcy Gallagher",
+    "department": "Engineering",
+    "role": "Engineering Manager",
+    "createdAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "demo-manager-2",
+    "name": "Sarah Chen",
+    "department": "Product",
+    "role": "Product Manager",
+    "createdAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "demo-manager-3",
+    "name": "Michael Rodriguez",
+    "department": "Sales",
+    "role": "Sales Director",
+    "createdAt": "2024-01-15T10:00:00.000Z"
+  }
+]
