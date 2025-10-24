@@ -103,6 +103,51 @@ For a complete deployment with backend:
 
 Deploy the static frontend to Vercel with `VITE_API_BASE_URL` pointing to your backend.
 
+### Troubleshooting Vercel Deployment
+
+If you see a blank white screen on Vercel, try these steps:
+
+1. **Check Browser Console**
+   - Open Developer Tools (F12)
+   - Look for errors in the Console tab
+   - Common issues: 404 errors for assets, CORS errors, JavaScript errors
+
+2. **Verify Build Output**
+   - Check the Vercel deployment logs
+   - Ensure build completed successfully
+   - Verify `dist/public` contains `index.html` and `/assets` folder
+
+3. **Check Vercel Configuration**
+   - Go to Vercel Project Settings → General
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist/public`
+   - **Install Command**: `npm install`
+   - **Framework Preset**: Other (or Vite)
+
+4. **Clear Cache and Redeploy**
+   - In Vercel, go to Deployments
+   - Click "..." on latest deployment → Redeploy
+   - Check "Clear Build Cache & Redeploy"
+
+5. **Test Build Locally**
+   ```bash
+   npm run build
+   cd dist/public
+   python3 -m http.server 8000
+   ```
+   Visit `http://localhost:8000` to verify the build works
+
+6. **Check Environment Variables**
+   - If `VITE_API_BASE_URL` is set but pointing to a non-existent backend, remove it
+   - For static demo mode, leave it unset
+   - Redeploy after changing environment variables
+
+7. **Common Fixes**
+   - Ensure `vercel.json` exists in project root
+   - Check that `client/public/data/*.json` files exist
+   - Verify Node.js version is 20+ in Vercel settings
+   - Try deploying from a fresh commit
+
 ## Environment Variables
 
 Create a `.env` file based on `.env.example`:
